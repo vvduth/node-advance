@@ -1,18 +1,22 @@
-
 const puppeteer = require("puppeteer");
 // testing the header of our application
-test("adds two mumbers", () => {
-  const sum = 1 + 2;
+let browser, page;
+beforeEach(async () => {
+  browser = await puppeteer.launch({
+    headless: false,
+    args: ["--no-sandbox"],
+  });
 
-  expect(sum).toEqual(3);
+  page = await browser.newPage();
+  await page.goto("localhost:3000");
 });
 
-test("try to laucnh a browser", async () => {
-  const browser = await puppeteer.launch({
-    headless: false,
-    args: ["--no-sandbox"]
-  });
-  const page = await browser.newPage();
+afterEach(async () => {
+    await browser.close();
+})
 
-  await page.goto('localhost:3000')
+test("try to laucnh a browser", async () => {
+  const text = await page.$eval("a.brand-logo", (el) => el.innerHTML);
+
+  expect(text).toEqual("Blogster");
 });
