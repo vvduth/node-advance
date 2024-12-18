@@ -1,6 +1,5 @@
 // testing the header of our application
-const sessionfactory = require("./factories/sessionFactory");
-const userFactory = require("./factories/userFactory");
+
 const Page = require("./helpers/page");
 
 let page;
@@ -14,7 +13,7 @@ afterEach(async () => {
 });
 
 test("the header has the correct text", async () => {
-  const text = await page.$eval("a.brand-logo", (el) => el.innerHTML);
+  const text = await page.getContentsOf("a.brand-logo");
 
   expect(text).toEqual("Blogster");
 });
@@ -27,15 +26,8 @@ test("clicking log in start oauth flow", async () => {
   expect(url).toMatch(/accounts\.google\.com/);
 });
 
-test.only("When signed in , shows log out button", async () => {
-  const user = await userFactory();
-  const { session, sig } = sessionfactory(user);
-
-  await page.setCookie({ name: "session", value: session });
-  await page.setCookie({ name: "session.sig", value: sig });
-  await page.goto("localhost:3000");
-  await page.waitFor('a[href="/auth/logout"]');
-
-  const text = await page.$eval('a[href="/auth/logout"]', (el) => el.innerHTML);
+test("When signed in , shows log out button", async () => {
+  await page.login();
+  const text = await page.getContentsOf('a[href="/auth/logout"]');
   expect(text).toEqual("Logout");
 });
