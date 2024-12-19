@@ -75,13 +75,13 @@ describe("User is not login", async () => {
     },
 
   ]
-  test("User can not create blog post", async () => {
-    const result = await page.post("/api/blogs", {title: "dsad", content: "dasdasdasd"})
-    expect(result).toEqual({ error: "You must log in!" });
+  test("Blog related actions are banned", async () => {
+    const results = await page.execRequest(actions);
+
+    for (let result of results){
+      expect(result ).toEqual({"error": "You must log in!"})
+    } 
   });
 
-  test("user can not get a list of post", async () => {
-    const result = await page.get("/api/blogs")
-    expect(result).toEqual({ error: "You must log in!" });
-  });
+  
 });
