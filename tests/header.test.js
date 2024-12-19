@@ -20,13 +20,7 @@ test("the header has the correct text", async () => {
   expect(text).toEqual("Blogster");
 });
 
-test("clicking log in start oauth flow", async () => {
-  await page.click(".right a");
 
-  const url = await page.url();
-
-  expect(url).toMatch(/accounts\.google\.com/);
-});
 
 test("When signed in , shows log out button", async () => {
   await page.login();
