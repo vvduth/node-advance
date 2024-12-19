@@ -8,8 +8,10 @@ beforeEach(async () => {
   await page.goto("http://localhost:3000");
 });
 
-afterEach(async () => {
+afterEach(async (done) => {
+  done()
   await page.close();
+  
 });
 
 test("the header has the correct text", async () => {
